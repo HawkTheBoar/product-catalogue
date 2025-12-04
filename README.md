@@ -1,3 +1,5 @@
+### ENDPOINTS
+
 GET /products/:page
 GET /categories/:page
 
