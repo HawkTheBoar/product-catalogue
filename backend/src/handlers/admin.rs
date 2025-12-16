@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use crate::handlers::{internal_error, HandlerResult};
 use crate::{
     generate_token,
@@ -11,19 +13,28 @@ use axum::{
     Json,
 };
 use bcrypt::{hash, hash_with_salt, DEFAULT_COST};
+use serde::Deserialize;
 use sqlx::{Pool, SqlitePool};
 use tokio::task::spawn_blocking;
 
 const SALT_SIZE: usize = 16;
-struct LoginPayload {
+
+#[derive(Deserialize)]
+pub struct LoginPayload {
     username: String,
     password: String,
+}
+pub async fn test(
+    State(app_state): State<Arc<AppState>>,
+    Json(req): Json<LoginPayload>,
+) -> HandlerResult<Json<()>> {
+    Ok((StatusCode::OK, Json(())))
 }
 // admin middleware
 pub async fn admin_auth() {}
 // POST /admin/login { username, password } -> 200 { SET-AUTH-TOKEN: session_token }, 400
 pub async fn login(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Json(req): Json<LoginPayload>,
 ) -> HandlerResult<(HeaderName, String)> {
     // first check if username & password are valid
@@ -81,7 +92,7 @@ pub async fn create_admin(
 }
 // POST /admin/category { category } -> 200, 400, 401
 pub async fn create_category(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Json(category): Json<Category>,
 ) -> HandlerResult<()> {
     sqlx::query!(
@@ -97,7 +108,7 @@ pub async fn create_category(
 }
 // DELETE /admin/category { category_id } -> 200, 400, 401
 pub async fn delete_category(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Path(category_id): Path<i32>,
 ) -> HandlerResult<String> {
     sqlx::query!("DELETE FROM categories WHERE id = ?", category_id)
@@ -108,7 +119,7 @@ pub async fn delete_category(
 }
 // PATCH /admin/category { category } -> 200, 400, 401
 pub async fn update_category(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Json(category): Json<Category>,
 ) -> HandlerResult<()> {
     sqlx::query!(
@@ -125,7 +136,7 @@ pub async fn update_category(
 }
 // POST /admin/product { product } -> 200, 400, 401
 pub async fn create_product(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Json(product): Json<Product>,
 ) -> HandlerResult<()> {
     sqlx::query!(
@@ -141,7 +152,7 @@ pub async fn create_product(
 }
 // DELETE /admin/product/:product_id -> 200, 400, 401
 pub async fn delete_product(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Path(product_id): Path<i32>,
 ) -> HandlerResult<()> {
     sqlx::query!("DELETE FROM products WHERE id = ?", product_id)
@@ -152,7 +163,7 @@ pub async fn delete_product(
 }
 // PATCH /admin/product { product } -> 200, 400, 401
 pub async fn update_product(
-    State(app_state): State<AppState>,
+    State(app_state): State<Arc<AppState>>,
     Json(product): Json<Product>,
 ) -> HandlerResult<()> {
     sqlx::query!(

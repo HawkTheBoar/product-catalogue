@@ -13,7 +13,10 @@ use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use std::{collections::HashMap, env, net::SocketAddr, sync::Arc};
 use tracing::info;
 
-use crate::handlers::admin::{delete_category, login};
+use crate::handlers::admin::{
+    create_category, create_product, delete_category, delete_product, login, test, update_category,
+    update_product,
+};
 struct AppState {
     pg: SqlitePool,
     redis: deadpool_redis::Pool,
@@ -39,18 +42,31 @@ async fn main() -> anyhow::Result<()> {
     sqlx::migrate!("./migrations").run(&pool).await?;
     // Ensure table exists
     let state = Arc::new(AppState { pg: pool, redis });
-    let protected = Router::new().route("/category/:category_id", routing::delete(delete_category));
-    let admin_routes = Router::new();
-    let category_routes = Router::new();
-    let product_routes = Router::new();
+    // let protected = Router::new().route("/category/:category_id", routing::delete(delete_category));
+    // let admin_routes = Router::new();
+    // let category_routes = Router::new();
+    // let product_routes = Router::new();
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
     // merge routers
     let app = Router::new()
-        .nest("/admin", admin_routes)
-        .nest("/categories", category_routes)
-        .nest("/product", product_routes)
-        .layer(Extension(state));
+        .route("/", post(test))
+        .route(
+            "/category",
+            routing::delete(delete_category)
+                .patch(update_category)
+                .post(create_category),
+        )
+        .route(
+            "/product",
+            routing::delete(delete_product)
+                .patch(update_product)
+                .post(create_product),
+        )
+        // .nest("/admin", admin_routes)
+        // .nest("/categories", category_routes)
+        // .nest("/product", product_routes)
+        .with_state(state);
     info!("listening on http://{}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
