@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS categories (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     parent_id INT,
-    FOREIGN KEY (parent_category_id) REFERENCES categories(id)
+    FOREIGN KEY (parent_id) REFERENCES categories(id)
 );
 
 -- Products Table
@@ -12,17 +12,11 @@ CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    price INT NOT NULL
-);
-
--- ProductCategories Table
-CREATE TABLE IF NOT EXISTS product_categories (
-    product_id INT,
+    price INT NOT NULL,
     category_id INT,
-    PRIMARY KEY (product_id, category_id),
-    FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
+
 CREATE TABLE IF NOT EXISTS admins (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     password VARCHAR(255) NOT NULL,

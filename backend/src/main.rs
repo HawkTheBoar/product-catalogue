@@ -4,14 +4,16 @@ use axum::{
     extract::{Extension, Json, Path},
     http::{Response, StatusCode},
     response::{IntoResponse, Redirect},
-    routing::{get, post},
+    routing::{self, get, post},
     Router,
 };
 use base64::Engine;
 use rand::RngCore;
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
-use std::{env, net::SocketAddr, sync::Arc};
+use std::{collections::HashMap, env, net::SocketAddr, sync::Arc};
 use tracing::info;
+
+use crate::handlers::admin::{delete_category, login};
 struct AppState {
     pg: SqlitePool,
     redis: deadpool_redis::Pool,
@@ -37,7 +39,7 @@ async fn main() -> anyhow::Result<()> {
     sqlx::migrate!("./migrations").run(&pool).await?;
     // Ensure table exists
     let state = Arc::new(AppState { pg: pool, redis });
-
+    let protected = Router::new().route("/category/:category_id", routing::delete(delete_category));
     let admin_routes = Router::new();
     let category_routes = Router::new();
     let product_routes = Router::new();
@@ -58,7 +60,7 @@ async fn main() -> anyhow::Result<()> {
 }
 pub fn generate_token() -> String {
     let mut bytes = [0u8; 32]; // 256-bit token
-    let mut rng = rand::rngs::OsRng::default();
+    let mut rng = rand::rngs::OsRng;
     rng.fill_bytes(&mut bytes);
     base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(bytes)
 }

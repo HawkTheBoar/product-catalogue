@@ -1,8 +1,10 @@
+use crate::handlers::{internal_error, HandlerResult};
 use crate::{
     generate_token,
     models::{Admin, Category, Product},
     AppState,
 };
+use axum::response::IntoResponse;
 use axum::{
     extract::{Path, State},
     http::{header, HeaderName, StatusCode},
@@ -11,21 +13,16 @@ use axum::{
 use bcrypt::{hash, hash_with_salt, DEFAULT_COST};
 use sqlx::{Pool, SqlitePool};
 use tokio::task::spawn_blocking;
+
 const SALT_SIZE: usize = 16;
-type HandlerResult<T> = Result<(StatusCode, T), (StatusCode, String)>;
-fn internal_error<E>(err: E) -> (StatusCode, String)
-where
-    E: std::error::Error,
-{
-    (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
-}
 struct LoginPayload {
     username: String,
     password: String,
 }
-async fn admin_auth() {}
+// admin middleware
+pub async fn admin_auth() {}
 // POST /admin/login { username, password } -> 200 { SET-AUTH-TOKEN: session_token }, 400
-async fn login(
+pub async fn login(
     State(app_state): State<AppState>,
     Json(req): Json<LoginPayload>,
 ) -> HandlerResult<(HeaderName, String)> {
@@ -63,7 +60,7 @@ async fn login(
         (header::SET_COOKIE, format!("auth_token={token}")),
     ))
 }
-async fn create_admin(
+pub async fn create_admin(
     db_pool: SqlitePool,
     username: String,
     password: String,
@@ -83,7 +80,7 @@ async fn create_admin(
     Ok(())
 }
 // POST /admin/category { category } -> 200, 400, 401
-async fn create_category(
+pub async fn create_category(
     State(app_state): State<AppState>,
     Json(category): Json<Category>,
 ) -> HandlerResult<()> {
@@ -92,41 +89,81 @@ async fn create_category(
         category.name,
         category.description,
         category.parent_id
-    );
+    )
+    .execute(&app_state.pg)
+    .await
+    .map_err(internal_error)?;
     Ok((StatusCode::OK, ()))
 }
 // DELETE /admin/category { category_id } -> 200, 400, 401
-async fn delete_category(
+pub async fn delete_category(
     State(app_state): State<AppState>,
     Path(category_id): Path<i32>,
-) -> HandlerResult<()> {
-    todo!();
+) -> HandlerResult<String> {
+    sqlx::query!("DELETE FROM categories WHERE id = ?", category_id)
+        .execute(&app_state.pg)
+        .await
+        .map_err(internal_error)?;
+    Ok((StatusCode::OK, "ok".to_string()))
 }
 // PATCH /admin/category { category } -> 200, 400, 401
-async fn update_category(
+pub async fn update_category(
     State(app_state): State<AppState>,
     Json(category): Json<Category>,
 ) -> HandlerResult<()> {
-    todo!();
+    sqlx::query!(
+        "UPDATE categories SET name = ?, description = ?, parent_id = ? WHERE id = ?",
+        category.name,
+        category.description,
+        category.parent_id,
+        category.id
+    )
+    .execute(&app_state.pg)
+    .await
+    .map_err(internal_error)?;
+    Ok((StatusCode::OK, ()))
 }
 // POST /admin/product { product } -> 200, 400, 401
-async fn create_product(
+pub async fn create_product(
     State(app_state): State<AppState>,
     Json(product): Json<Product>,
 ) -> HandlerResult<()> {
-    todo!();
+    sqlx::query!(
+        "INSERT INTO products (name, description, price) VALUES(?, ?, ?)",
+        product.name,
+        product.description,
+        product.price
+    )
+    .execute(&app_state.pg)
+    .await
+    .map_err(internal_error)?;
+    Ok((StatusCode::OK, ()))
 }
 // DELETE /admin/product/:product_id -> 200, 400, 401
-async fn delete_product(
+pub async fn delete_product(
     State(app_state): State<AppState>,
     Path(product_id): Path<i32>,
 ) -> HandlerResult<()> {
-    todo!();
+    sqlx::query!("DELETE FROM products WHERE id = ?", product_id)
+        .execute(&app_state.pg)
+        .await
+        .map_err(internal_error)?;
+    Ok((StatusCode::OK, ()))
 }
 // PATCH /admin/product { product } -> 200, 400, 401
-async fn update_product(
+pub async fn update_product(
     State(app_state): State<AppState>,
     Json(product): Json<Product>,
 ) -> HandlerResult<()> {
-    todo!();
+    sqlx::query!(
+        "UPDATE products SET name = ?, description = ?, price = ? WHERE id = ?",
+        product.name,
+        product.description,
+        product.price,
+        product.id
+    )
+    .execute(&app_state.pg)
+    .await
+    .map_err(internal_error)?;
+    Ok((StatusCode::OK, ()))
 }
