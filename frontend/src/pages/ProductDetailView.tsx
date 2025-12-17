@@ -6,15 +6,15 @@ import {
   Typography,
   Button,
   CircularProgress,
-  Paper,
   IconButton,
   Snackbar,
   Alert,
+  Divider,
+  Chip,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
-import SettingsIcon from '@mui/icons-material/Settings';
-import CropSquareIcon from '@mui/icons-material/CropSquare';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { getProduct } from '../services/api';
 import { useCart } from '../context/CartContext';
 import type { Product } from '../types';
@@ -80,22 +80,6 @@ const ProductDetailView: React.FC = () => {
     );
   }
 
-  // Mock detail items for the design
-  const detailItems = [
-    {
-      title: 'Product Specifications',
-      description: 'High-quality materials and craftsmanship ensure durability and long-lasting performance.',
-    },
-    {
-      title: 'Shipping Information',
-      description: 'Free shipping on orders over $50. Standard delivery takes 3-5 business days.',
-    },
-    {
-      title: 'Return Policy',
-      description: '30-day return policy. Items must be unused and in original packaging.',
-    },
-  ];
-
   return (
     <Box sx={{ flexGrow: 1, minHeight: '100vh', backgroundColor: '#FAFAFA' }}>
       <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -115,196 +99,168 @@ const ProductDetailView: React.FC = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-            gap: 4,
-            mb: 6,
+            gridTemplateColumns: { xs: '1fr', md: '1fr 1.2fr' },
+            gap: 5,
           }}
         >
-          {/* Product Image */}
+          {/* Product Image Placeholder */}
           <Box>
             <Box
               sx={{
-                height: 500,
+                height: { xs: 300, md: 400 },
                 backgroundColor: '#E8E4F3',
                 borderRadius: 3,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 4,
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.08)',
               }}
             >
               <Box
                 sx={{
-                  width: 72,
-                  height: 72,
+                  width: 120,
+                  height: 120,
                   borderRadius: '50%',
                   backgroundColor: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <ChangeHistoryIcon sx={{ color: '#6B46C1', fontSize: 40 }} />
+                <LocalOfferIcon sx={{ color: '#6B46C1', fontSize: 60 }} />
               </Box>
-              <Box
-                sx={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: '50%',
-                  backgroundColor: '#FFFFFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <SettingsIcon sx={{ color: '#6B46C1', fontSize: 40 }} />
-              </Box>
-              <Box
-                sx={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: '50%',
-                  backgroundColor: '#FFFFFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <CropSquareIcon sx={{ color: '#6B46C1', fontSize: 40 }} />
-              </Box>
+            </Box>
+
+            {/* Product Meta Info */}
+            <Box sx={{ mt: 3, p: 2, backgroundColor: '#FFFFFF', borderRadius: 2, boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.06)' }}>
+              <Typography variant="caption" sx={{ color: '#757575', display: 'block', mb: 0.5 }}>
+                Product ID
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#2C2C2C', fontWeight: 600, mb: 2 }}>
+                #{product.product_id}
+              </Typography>
+
+              <Divider sx={{ my: 1.5 }} />
+
+              <Typography variant="caption" sx={{ color: '#757575', display: 'block', mb: 0.5 }}>
+                Published
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#2C2C2C' }}>
+                {new Date(product.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </Typography>
             </Box>
           </Box>
 
           {/* Product Info */}
           <Box>
+            {/* Product Name */}
             <Typography
-              variant="caption"
+              variant="h3"
               sx={{
-                display: 'inline-block',
-                px: 2,
-                py: 0.5,
                 mb: 2,
-                backgroundColor: '#E8E4F3',
-                borderRadius: 1,
-                color: '#6B46C1',
-                fontWeight: 600,
+                fontWeight: 700,
+                color: '#2C2C2C',
+                fontSize: { xs: '2rem', md: '2.5rem' },
               }}
             >
-              Label
-            </Typography>
-
-            <Typography variant="h3" sx={{ mb: 2, fontWeight: 700, color: '#2C2C2C' }}>
               {product.product_name}
             </Typography>
 
-            <Typography variant="body2" sx={{ mb: 2, color: '#757575' }}>
-              Published {new Date(product.created_at).toLocaleDateString()}
-            </Typography>
-
-            <Typography variant="h4" sx={{ mb: 3, fontWeight: 700, color: '#6B46C1' }}>
-              ${product.price.toFixed(2)}
-            </Typography>
-
-            <Typography variant="body1" sx={{ mb: 2, color: '#2C2C2C', lineHeight: 1.7 }}>
-              {product.description}
-            </Typography>
-
-            <Typography variant="body1" sx={{ mb: 4, color: '#2C2C2C', lineHeight: 1.7 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
-            </Typography>
-
-            <Button
-              variant="contained"
-              size="large"
-              onClick={handleAddToCart}
-              sx={{
-                backgroundColor: '#6B46C1',
-                color: '#FFFFFF',
-                px: 4,
-                py: 1.5,
-                fontSize: '1rem',
-                fontWeight: 600,
-                '&:hover': {
-                  backgroundColor: '#5A38A3',
-                },
-              }}
-            >
-              Add to Cart
-            </Button>
-          </Box>
-        </Box>
-
-        {/* Details Section */}
-        <Box>
-          <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: '#2C2C2C' }}>
-            Details
-          </Typography>
-
-          {detailItems.map((item, index) => (
-            <Paper
-              key={index}
-              sx={{
-                p: 3,
-                mb: 2,
-                display: 'flex',
-                gap: 3,
-                backgroundColor: '#FFFFFF',
-                boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.08)',
-              }}
-            >
-              {/* Thumbnail */}
-              <Box
+            {/* Price */}
+            <Box sx={{ mb: 3 }}>
+              <Chip
+                label={`$${product.price.toFixed(2)}`}
                 sx={{
-                  minWidth: 80,
-                  height: 80,
-                  backgroundColor: '#E8E4F3',
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 1,
+                  backgroundColor: '#6B46C1',
+                  color: '#FFFFFF',
+                  fontSize: '1.5rem',
+                  fontWeight: 700,
+                  height: 48,
+                  px: 2,
+                  '& .MuiChip-label': {
+                    px: 1,
+                  },
+                }}
+              />
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
+
+            {/* Description */}
+            <Box sx={{ mb: 4 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  mb: 1.5,
+                  fontWeight: 600,
+                  color: '#2C2C2C',
                 }}
               >
-                <Box
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    backgroundColor: '#FFFFFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ChangeHistoryIcon sx={{ color: '#6B46C1', fontSize: 12 }} />
-                </Box>
-                <Box
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    backgroundColor: '#FFFFFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <SettingsIcon sx={{ color: '#6B46C1', fontSize: 12 }} />
-                </Box>
-              </Box>
+                Description
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: '#555555',
+                  lineHeight: 1.8,
+                  whiteSpace: 'pre-wrap',
+                }}
+              >
+                {product.description || 'No description available for this product.'}
+              </Typography>
+            </Box>
 
-              {/* Content */}
-              <Box>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 600, color: '#2C2C2C' }}>
-                  {item.title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#757575', lineHeight: 1.6 }}>
-                  {item.description}
-                </Typography>
-              </Box>
-            </Paper>
-          ))}
+            <Divider sx={{ my: 3 }} />
+
+            {/* Add to Cart Button */}
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleAddToCart}
+                startIcon={<ShoppingCartIcon />}
+                sx={{
+                  backgroundColor: '#6B46C1',
+                  color: '#FFFFFF',
+                  px: 5,
+                  py: 1.5,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  flexGrow: 1,
+                  '&:hover': {
+                    backgroundColor: '#5A38A3',
+                  },
+                }}
+              >
+                Add to Cart
+              </Button>
+
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() => navigate('/')}
+                sx={{
+                  borderColor: '#6B46C1',
+                  color: '#6B46C1',
+                  px: 4,
+                  py: 1.5,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  '&:hover': {
+                    borderColor: '#5A38A3',
+                    backgroundColor: 'rgba(107, 70, 193, 0.04)',
+                  },
+                }}
+              >
+                Continue Shopping
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Container>
 
@@ -315,8 +271,13 @@ const ProductDetailView: React.FC = () => {
         onClose={() => setShowSuccess(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert onClose={() => setShowSuccess(false)} severity="success" sx={{ width: '100%' }}>
-          Product added to cart!
+        <Alert
+          onClose={() => setShowSuccess(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+          variant="filled"
+        >
+          {product?.product_name} added to cart!
         </Alert>
       </Snackbar>
     </Box>
