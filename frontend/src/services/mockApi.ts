@@ -91,7 +91,7 @@ export const getCategory = async (id: number): Promise<CategoryResponse> => {
   };
 };
 
-// Admin functions (for future use)
+// Admin functions
 export const adminLogin = async (username: string, password: string): Promise<string> => {
   await delay();
   // Mock authentication
@@ -103,30 +103,93 @@ export const adminLogin = async (username: string, password: string): Promise<st
 
 export const createProduct = async (product: Partial<Product>): Promise<Product> => {
   await delay();
-  throw new Error('Create product not implemented in mock API');
+
+  // Generate new ID
+  const newId = Math.max(...mockProducts.map((p) => p.product_id), 0) + 1;
+
+  const newProduct: Product = {
+    product_id: newId,
+    product_name: product.product_name || 'New Product',
+    description: product.description || '',
+    price: product.price || 0,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+
+  mockProducts.push(newProduct);
+  return newProduct;
 };
 
 export const updateProduct = async (product: Product): Promise<Product> => {
   await delay();
-  throw new Error('Update product not implemented in mock API');
+
+  const index = mockProducts.findIndex((p) => p.product_id === product.product_id);
+  if (index === -1) {
+    throw new Error('Product not found');
+  }
+
+  const updatedProduct = {
+    ...product,
+    updated_at: new Date().toISOString(),
+  };
+
+  mockProducts[index] = updatedProduct;
+  return updatedProduct;
 };
 
 export const deleteProduct = async (productId: number): Promise<void> => {
   await delay();
-  throw new Error('Delete product not implemented in mock API');
+
+  const index = mockProducts.findIndex((p) => p.product_id === productId);
+  if (index === -1) {
+    throw new Error('Product not found');
+  }
+
+  mockProducts.splice(index, 1);
 };
 
 export const createCategory = async (category: Partial<Category>): Promise<Category> => {
   await delay();
-  throw new Error('Create category not implemented in mock API');
+
+  // Generate new ID
+  const newId = Math.max(...mockCategories.map((c) => c.category_id), 0) + 1;
+
+  const newCategory: Category = {
+    category_id: newId,
+    category_name: category.category_name || 'New Category',
+    description: category.description || '',
+    parent_category_id: category.parent_category_id || null,
+  };
+
+  mockCategories.push(newCategory);
+  return newCategory;
 };
 
 export const updateCategory = async (category: Category): Promise<Category> => {
   await delay();
-  throw new Error('Update category not implemented in mock API');
+
+  const index = mockCategories.findIndex((c) => c.category_id === category.category_id);
+  if (index === -1) {
+    throw new Error('Category not found');
+  }
+
+  mockCategories[index] = category;
+  return category;
 };
 
 export const deleteCategory = async (categoryId: number): Promise<void> => {
   await delay();
-  throw new Error('Delete category not implemented in mock API');
+
+  const index = mockCategories.findIndex((c) => c.category_id === categoryId);
+  if (index === -1) {
+    throw new Error('Category not found');
+  }
+
+  // Check if category has subcategories
+  const hasSubcategories = mockCategories.some((c) => c.parent_category_id === categoryId);
+  if (hasSubcategories) {
+    throw new Error('Cannot delete category with subcategories');
+  }
+
+  mockCategories.splice(index, 1);
 };

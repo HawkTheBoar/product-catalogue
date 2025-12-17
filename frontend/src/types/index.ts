@@ -1,4 +1,4 @@
-// Database schema types
+// Frontend types (used throughout the application)
 
 export interface Product {
   product_id: number;
@@ -15,6 +15,23 @@ export interface Category {
   category_name: string;
   description: string;
   parent_category_id: number | null;
+}
+
+// Backend types (match the Rust backend structure)
+
+export interface BackendProduct {
+  id: number;
+  name: string;
+  description: string | null;
+  price: number;
+  category_id: number | null;
+}
+
+export interface BackendCategory {
+  id: number;
+  name: string;
+  description: string | null;
+  parent_id: number | null;
 }
 
 export interface CartItem {
