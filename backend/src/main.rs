@@ -76,15 +76,11 @@ async fn main() -> anyhow::Result<()> {
     // let admin_routes = Router::new();
     // let category_routes = Router::new();
     // let product_routes = Router::new();
-    let addr = SocketAddr::V4(SocketAddrV4::new(
-        Ipv4Addr::new(0, 0, 0, 0),
-        env::var("AXUM_PORT")
-            .unwrap_or("3000".to_string())
-            .parse()?,
-    ));
-    // merge routers
-    let app = Router::new()
-        // .route("/", post(test))
+    let port: u16 = env::var("AXUM_PORT")
+        .unwrap_or("3000".to_string())
+        .parse()?;
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+    let admin_router = Router::new()
         .route(
             "/category",
             routing::delete(delete_category)
@@ -97,13 +93,16 @@ async fn main() -> anyhow::Result<()> {
                 .patch(update_product)
                 .post(create_product),
         )
+        .route("/login", post(login));
+    // merge routers
+    let app = Router::new()
+        // .route("/", post(test))
         .route("/category/{id}", get(category_get))
         .route("/categories", get(parent_categories_get))
         .route("/product/{id}", get(product_get))
         .route("/product/search/{query}/{page}", get(product_search))
         .route("/product/{page}", get(product_page))
-        .route("/admin/login", post(login))
-        // .nest("/admin", admin_routes)
+        .nest("/admin", admin_router)
         // .nest("/categories", category_routes)
         // .nest("/product", product_routes)
         .with_state(state);

@@ -7,7 +7,6 @@ use crate::{
     AppState,
 };
 use axum::http::HeaderMap;
-use axum::response::IntoResponse;
 use axum::{
     extract::{Path, State},
     http::{header, HeaderName, StatusCode},
@@ -25,12 +24,6 @@ pub struct LoginPayload {
     username: String,
     password: String,
 }
-// pub async fn test(
-//     State(app_state): State<Arc<AppState>>,
-//     Json(req): Json<LoginPayload>,
-// ) -> HandlerResult<Json<()>> {
-//     Ok((StatusCode::OK, Json(())))
-// }
 // admin middleware
 pub async fn admin_auth() {}
 // POST /admin/login { username, password } -> 200 { SET_COOKIE: session_token }, 400
