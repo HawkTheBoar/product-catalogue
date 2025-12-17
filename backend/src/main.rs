@@ -16,7 +16,10 @@ use std::{
     net::{Ipv4Addr, SocketAddr, SocketAddrV4},
     sync::Arc,
 };
-use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
+use tokio::{
+    io::{AsyncBufReadExt, AsyncReadExt, BufReader},
+    net::TcpListener,
+};
 use tower_http::trace::TraceLayer;
 use tracing::info;
 
@@ -115,10 +118,11 @@ async fn main() -> anyhow::Result<()> {
     //     .route("/test/{test}", get(test))
     //     .with_state(state.clone());
     info!("listening on http://{}", addr);
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await?;
-
+    // axum::Server::bind(&addr)
+    //     .serve(app.into_make_service())
+    //     .await?;
+    let listener = TcpListener::bind(addr).await?;
+    axum::serve(listener, app).await?;
     Ok(())
 }
 pub fn generate_token() -> String {
