@@ -1,0 +1,57 @@
+services:
+  frontend:
+    image: node:20-alpine
+    container_name: vite-frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host"
+    environment:
+      - VITE_REDIS_HOST=redis
+      - VITE_REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - app-network
+
+  rust-backend:
+    image: nixos/nix:2.20.5
+    ports:
+      - "3000:3000"
+    container_name: rust-backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - nix-store:/nix
+    command: >
+      sh -c "
+        nix --extra-experimental-features 'nix-command flakes' run ."
+    environment:
+      - DATABASE_URL=sqlite:catalogue.db
+      - AXUM_PORT=3000
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+volumes:
+  redis-data:
+  nix-store:
+
+networks:
+  app-network:
+    driver: bridge
