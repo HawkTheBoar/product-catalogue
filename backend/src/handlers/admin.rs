@@ -6,6 +6,7 @@ use crate::{
     models::{Admin, Category, Product},
     AppState,
 };
+use axum::http::HeaderMap;
 use axum::response::IntoResponse;
 use axum::{
     extract::{Path, State},
@@ -24,19 +25,19 @@ pub struct LoginPayload {
     username: String,
     password: String,
 }
-pub async fn test(
-    State(app_state): State<Arc<AppState>>,
-    Json(req): Json<LoginPayload>,
-) -> HandlerResult<Json<()>> {
-    Ok((StatusCode::OK, Json(())))
-}
+// pub async fn test(
+//     State(app_state): State<Arc<AppState>>,
+//     Json(req): Json<LoginPayload>,
+// ) -> HandlerResult<Json<()>> {
+//     Ok((StatusCode::OK, Json(())))
+// }
 // admin middleware
 pub async fn admin_auth() {}
-// POST /admin/login { username, password } -> 200 { SET-AUTH-TOKEN: session_token }, 400
+// POST /admin/login { username, password } -> 200 { SET_COOKIE: session_token }, 400
 pub async fn login(
     State(app_state): State<Arc<AppState>>,
     Json(req): Json<LoginPayload>,
-) -> HandlerResult<(HeaderName, String)> {
+) -> HandlerResult<HeaderMap> {
     // first check if username & password are valid
     let res = sqlx::query_as!(
         Admin,
@@ -61,30 +62,40 @@ pub async fn login(
     }
     // If auth is successful
     let token = generate_token();
-    sqlx::query!("INSERT INTO tokens (token) VALUES(?)", token)
-        .execute(&app_state.pg)
-        .await
-        .map_err(internal_error)?;
-
-    Ok((
-        StatusCode::OK,
-        (header::SET_COOKIE, format!("auth_token={token}")),
-    ))
+    sqlx::query!(
+        "INSERT INTO tokens (token, admin_id) VALUES(?, ?)",
+        token,
+        found.id
+    )
+    .execute(&app_state.pg)
+    .await
+    .map_err(internal_error)?;
+    let mut headers = HeaderMap::new();
+    if let Ok(cookie) = format!("auth_token={token}").parse() {
+        headers.insert(header::SET_COOKIE, cookie);
+    } else {
+        return Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "failed to parse cookie with auth token".to_string(),
+        ));
+    }
+    Ok((StatusCode::OK, headers))
 }
 pub async fn create_admin(
     db_pool: SqlitePool,
     username: String,
     password: String,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> anyhow::Result<()> {
     let salt = rand::random::<[u8; SALT_SIZE]>();
-    let pass = password.clone();
+    let pass = password;
     let hashed = spawn_blocking(async move || hash_with_salt(pass, DEFAULT_COST, salt))
         .await?
-        .await?;
+        .await?
+        .to_string();
     sqlx::query!(
         "INSERT INTO admins (username, password) VALUES(?, ?)",
         username,
-        password
+        hashed
     )
     .execute(&db_pool)
     .await?;
@@ -109,7 +120,7 @@ pub async fn create_category(
 // DELETE /admin/category { category_id } -> 200, 400, 401
 pub async fn delete_category(
     State(app_state): State<Arc<AppState>>,
-    Path(category_id): Path<i32>,
+    Json(category_id): Json<i32>,
 ) -> HandlerResult<String> {
     sqlx::query!("DELETE FROM categories WHERE id = ?", category_id)
         .execute(&app_state.pg)
@@ -153,7 +164,7 @@ pub async fn create_product(
 // DELETE /admin/product/:product_id -> 200, 400, 401
 pub async fn delete_product(
     State(app_state): State<Arc<AppState>>,
-    Path(product_id): Path<i32>,
+    Json(product_id): Json<i32>,
 ) -> HandlerResult<()> {
     sqlx::query!("DELETE FROM products WHERE id = ?", product_id)
         .execute(&app_state.pg)

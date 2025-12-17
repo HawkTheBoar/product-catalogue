@@ -11,11 +11,15 @@ use base64::Engine;
 use rand::RngCore;
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use std::{collections::HashMap, env, net::SocketAddr, sync::Arc};
+use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
 use tracing::info;
 
-use crate::handlers::admin::{
-    create_category, create_product, delete_category, delete_product, login, test, update_category,
-    update_product,
+use crate::handlers::{
+    admin::{
+        create_admin, create_category, create_product, delete_category, delete_product, login,
+        update_category, update_product,
+    },
+    common::{category_get, parent_categories_get, product_get, product_page, product_search},
 };
 struct AppState {
     pg: SqlitePool,
@@ -23,23 +27,44 @@ struct AppState {
 }
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    tracing_subscriber::fmt::init();
-
     // Read DB URL and domain from env (provide defaults).
     let database_url =
         env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite:catalogue.db".to_string());
+    // Create SQLite pool
+    let pool = SqlitePoolOptions::new()
+        .max_connections(5)
+        .connect(&database_url)
+        .await?;
+    let args = std::env::args().collect::<Vec<String>>();
+    if args.get(1).is_some() {
+        let stdin = tokio::io::stdin();
+        let mut reader = BufReader::new(stdin);
+
+        let mut username = String::new();
+        let mut password = String::new();
+
+        println!("Input username:");
+        reader.read_line(&mut username).await?;
+        let username = username.trim().to_string();
+
+        println!("Input password:");
+        reader.read_line(&mut password).await?;
+        let password = password.trim().to_string();
+
+        println!("creating admin: {}, {}", &username, &password);
+        create_admin(pool, username, password).await?;
+
+        println!("admin created!");
+        return Ok(());
+    }
+
+    tracing_subscriber::fmt::init();
+    sqlx::migrate!("./migrations").run(&pool).await?;
     // Create a Redis pool
     let cfg = deadpool_redis::Config::from_url("redis://127.0.0.1");
     let redis = cfg
         .create_pool(Some(deadpool_redis::Runtime::Tokio1))
         .expect("failed to create redis pool");
-    // Create pool
-    let pool = SqlitePoolOptions::new()
-        .max_connections(5)
-        .connect(&database_url)
-        .await?;
-
-    sqlx::migrate!("./migrations").run(&pool).await?;
     // Ensure table exists
     let state = Arc::new(AppState { pg: pool, redis });
     // let protected = Router::new().route("/category/:category_id", routing::delete(delete_category));
@@ -50,7 +75,7 @@ async fn main() -> anyhow::Result<()> {
 
     // merge routers
     let app = Router::new()
-        .route("/", post(test))
+        // .route("/", post(test))
         .route(
             "/category",
             routing::delete(delete_category)
@@ -63,6 +88,12 @@ async fn main() -> anyhow::Result<()> {
                 .patch(update_product)
                 .post(create_product),
         )
+        .route("/category/{id}", get(category_get))
+        .route("/categories", get(parent_categories_get))
+        .route("/product/{id}", get(product_get))
+        .route("/product/search/{query}/{page}", get(product_search))
+        .route("/product/{page}", get(product_page))
+        .route("/admin/login", post(login))
         // .nest("/admin", admin_routes)
         // .nest("/categories", category_routes)
         // .nest("/product", product_routes)

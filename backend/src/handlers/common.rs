@@ -1,10 +1,11 @@
-use std::os::unix::process::parent_id;
+use std::{os::unix::process::parent_id, sync::Arc};
 
 use axum::{
     extract::{Path, State},
     http::StatusCode,
     Json,
 };
+use serde::Serialize;
 
 use crate::{
     handlers::{internal_error, HandlerResult},
@@ -13,8 +14,8 @@ use crate::{
 };
 const PAGE_SIZE: i64 = 50;
 // GET /products/:page -> 200 { product[] }, 404
-async fn product_page(
-    app_state: State<AppState>,
+pub async fn product_page(
+    app_state: State<Arc<AppState>>,
     Path(page): Path<i64>,
 ) -> HandlerResult<Json<Vec<Product>>> {
     let offset = PAGE_SIZE * page;
@@ -40,8 +41,8 @@ async fn product_page(
     Ok((StatusCode::OK, Json(products)))
 }
 // GET /product/search/:query/:page -> 200 { product[] }, 404
-async fn product_search(
-    app_state: State<AppState>,
+pub async fn product_search(
+    app_state: State<Arc<AppState>>,
     Path(query): Path<String>,
     Path(page): Path<i64>,
 ) -> HandlerResult<Json<Vec<Product>>> {
@@ -70,8 +71,8 @@ async fn product_search(
     Ok((StatusCode::OK, Json(products)))
 }
 // GET /product/:id -> 200 { product }, 404
-async fn product_get(
-    app_state: State<AppState>,
+pub async fn product_get(
+    app_state: State<Arc<AppState>>,
     Path(product_id): Path<i64>,
 ) -> HandlerResult<Json<Product>> {
     let product = sqlx::query_as!(Product, "SELECT * from products WHERE id = ?", product_id)
@@ -85,23 +86,27 @@ async fn product_get(
     }
 }
 // GET /categories -> 200 { parent_categories[] }
-async fn categories_get(app_state: State<AppState>) -> HandlerResult<Json<Vec<Category>>> {
-    let categories = sqlx::query_as!(Category, "SELECT * from categories WHERE parent_id = NULL")
-        .fetch_all(&app_state.pg)
-        .await
-        .map_err(internal_error)?;
-    Ok((StatusCode::OK, Json(categories)))
+pub async fn parent_categories_get(
+    app_state: State<Arc<AppState>>,
+) -> HandlerResult<Json<Vec<Category>>> {
+    let parent_categories =
+        sqlx::query_as!(Category, "SELECT * from categories WHERE parent_id = NULL")
+            .fetch_all(&app_state.pg)
+            .await
+            .map_err(internal_error)?;
+    Ok((StatusCode::OK, Json(parent_categories)))
 }
+
 // GET /category/:id -> 200 { product[], sub_categories[], parent_categories[] }, 404
-struct GetCategoryResponse {
+#[derive(Serialize)]
+pub struct GetCategoryResponse {
     products: Vec<Product>,
     sub_categories: Vec<Category>,
     parent_categories: Vec<Category>,
 }
-async fn category_get(
-    app_state: State<AppState>,
+pub async fn category_get(
+    app_state: State<Arc<AppState>>,
     Path(category_id): Path<i64>,
-    Path(page): Path<i64>,
 ) -> HandlerResult<Json<GetCategoryResponse>> {
     let products = sqlx::query_as!(
         Product,
