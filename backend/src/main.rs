@@ -77,7 +77,7 @@ async fn main() -> anyhow::Result<()> {
     // let category_routes = Router::new();
     // let product_routes = Router::new();
     let addr = SocketAddr::V4(SocketAddrV4::new(
-        Ipv4Addr::new(127, 0, 0, 1),
+        Ipv4Addr::new(0, 0, 0, 0),
         env::var("AXUM_PORT")
             .unwrap_or("3000".to_string())
             .parse()?,

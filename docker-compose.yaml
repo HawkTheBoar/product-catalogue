@@ -14,8 +14,7 @@ services:
       - VITE_REDIS_PORT=6379
     depends_on:
       - redis
-    networks:
-      - app-network
+      - rust-backend
 
   redis:
     image: redis:7-alpine
@@ -25,8 +24,6 @@ services:
     volumes:
       - redis-data:/data
     command: redis-server --appendonly yes
-    networks:
-      - app-network
 
   rust-backend:
     image: nixos/nix:2.20.5
@@ -36,7 +33,7 @@ services:
     working_dir: /app
     volumes:
       - ./backend:/app
-      - nix-store:/nix
+      # - nix-store:/nix
     command: >
       sh -c "
         nix --extra-experimental-features 'nix-command flakes' run ."
@@ -45,13 +42,6 @@ services:
       - AXUM_PORT=3000
     depends_on:
       - redis
-    networks:
-      - app-network
 
 volumes:
   redis-data:
-  nix-store:
-
-networks:
-  app-network:
-    driver: bridge
