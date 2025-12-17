@@ -17,6 +17,7 @@ use std::{
     sync::Arc,
 };
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
+use tower_http::trace::TraceLayer;
 use tracing::info;
 
 use crate::handlers::{
@@ -24,7 +25,9 @@ use crate::handlers::{
         create_admin, create_category, create_product, delete_category, delete_product, login,
         update_category, update_product,
     },
-    common::{category_get, parent_categories_get, product_get, product_page, product_search},
+    common::{
+        category_get, parent_categories_get, product_get, product_page, product_search, test,
+    },
 };
 struct AppState {
     pg: SqlitePool,
@@ -101,11 +104,16 @@ async fn main() -> anyhow::Result<()> {
         .route("/categories", get(parent_categories_get))
         .route("/product/{id}", get(product_get))
         .route("/product/search/{query}/{page}", get(product_search))
-        .route("/product/{page}", get(product_page))
+        .route("/products/{page}", get(product_page))
+        .route("/test/{test}", get(test))
         .nest("/admin", admin_router)
         // .nest("/categories", category_routes)
         // .nest("/product", product_routes)
+        //
         .with_state(state);
+    // let app = Router::new()
+    //     .route("/test/{test}", get(test))
+    //     .with_state(state.clone());
     info!("listening on http://{}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())

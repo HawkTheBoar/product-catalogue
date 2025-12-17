@@ -76,3 +76,33 @@ pub struct Token {
     pub admin_id: String,
     // pub created_at
 }
+pub mod request {
+    pub mod delete {
+        use serde::{Deserialize, Serialize};
+        #[derive(Debug, Serialize, Deserialize)]
+        pub struct Product {
+            pub product_id: i64,
+        }
+        #[derive(Debug, Serialize, Deserialize)]
+        pub struct Category {
+            pub category_id: i64,
+        }
+    }
+    pub mod create {
+        use serde::{Deserialize, Serialize};
+
+        #[derive(Debug, Serialize, Deserialize)]
+        pub struct Product {
+            pub name: String,
+            pub description: Option<String>,
+            pub price: i64,
+            pub category_id: Option<i64>,
+        }
+        #[derive(Debug, Serialize, Deserialize)]
+        pub struct Category {
+            pub name: String,
+            pub description: Option<String>,
+            pub parent_id: Option<i64>,
+        }
+    }
+}

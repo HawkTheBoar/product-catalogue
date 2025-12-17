@@ -5,14 +5,24 @@ use axum::{
     http::StatusCode,
     Json,
 };
-use serde::Serialize;
+use redis::AsyncCommands;
+use serde::{Deserialize, Serialize};
+use serde_json::Serializer;
+use tracing::info;
 
 use crate::{
-    handlers::{internal_error, HandlerResult},
+    handlers::{internal_error, redis_get, redis_set, HandlerResult},
     models::{Category, Product, SubCategory},
     AppState,
 };
 const PAGE_SIZE: i64 = 50;
+pub async fn test(
+    _app_state: State<Arc<AppState>>,
+    Path(test): Path<String>,
+) -> HandlerResult<Json<()>> {
+    info!("Received test param: {}", test);
+    Ok((StatusCode::OK, Json(())))
+}
 // GET /products/:page -> 200 { product[] }, 404
 pub async fn product_page(
     app_state: State<Arc<AppState>>,
@@ -46,6 +56,12 @@ pub async fn product_search(
     Path(query): Path<String>,
     Path(page): Path<i64>,
 ) -> HandlerResult<Json<Vec<Product>>> {
+    let redis_key = format!("/product/search/{}/{}", &query, &page);
+    let cached: Option<Vec<Product>> = redis_get(&redis_key, &app_state).await?;
+    if let Some(cached) = cached {
+        info!("Using redis cached response!!");
+        return Ok((StatusCode::OK, Json(cached)));
+    }
     let offset = PAGE_SIZE * page;
     let products = sqlx::query_as!(
         Product,
@@ -68,6 +84,7 @@ pub async fn product_search(
     .fetch_all(&app_state.pg)
     .await
     .map_err(internal_error)?;
+    redis_set(redis_key, &products, &app_state).await?;
     Ok((StatusCode::OK, Json(products)))
 }
 // GET /product/:id -> 200 { product }, 404
@@ -90,7 +107,7 @@ pub async fn parent_categories_get(
     app_state: State<Arc<AppState>>,
 ) -> HandlerResult<Json<Vec<Category>>> {
     let parent_categories =
-        sqlx::query_as!(Category, "SELECT * from categories WHERE parent_id = NULL")
+        sqlx::query_as!(Category, "SELECT * from categories WHERE parent_id IS NULL")
             .fetch_all(&app_state.pg)
             .await
             .map_err(internal_error)?;
@@ -98,7 +115,7 @@ pub async fn parent_categories_get(
 }
 
 // GET /category/:id -> 200 { product[], sub_categories[], parent_categories[] }, 404
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct GetCategoryResponse {
     products: Vec<Product>,
     sub_categories: Vec<Category>,
@@ -108,6 +125,12 @@ pub async fn category_get(
     app_state: State<Arc<AppState>>,
     Path(category_id): Path<i64>,
 ) -> HandlerResult<Json<GetCategoryResponse>> {
+    let redis_key = format!("/category/{}", &category_id);
+    let cached: Option<GetCategoryResponse> = redis_get(&redis_key, &app_state).await?;
+    if let Some(cached) = cached {
+        info!("Using redis cached response!!");
+        return Ok((StatusCode::OK, Json(cached)));
+    }
     let products = sqlx::query_as!(
         Product,
         r#"
@@ -196,14 +219,11 @@ pub async fn category_get(
     .iter()
     .filter_map(|sc| sc.try_into().ok())
     .collect();
-
-    // I want all products that are present in this category and its sub categories
-    Ok((
-        StatusCode::OK,
-        Json(GetCategoryResponse {
-            products,
-            sub_categories,
-            parent_categories,
-        }),
-    ))
+    let resp = GetCategoryResponse {
+        products,
+        sub_categories,
+        parent_categories,
+    };
+    redis_set(redis_key, &resp, &app_state).await?;
+    Ok((StatusCode::OK, Json(resp)))
 }

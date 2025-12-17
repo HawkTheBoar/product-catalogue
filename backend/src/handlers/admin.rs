@@ -16,6 +16,7 @@ use bcrypt::{hash, hash_with_salt, DEFAULT_COST};
 use serde::Deserialize;
 use sqlx::{Pool, SqlitePool};
 use tokio::task::spawn_blocking;
+use tracing::info;
 
 const SALT_SIZE: usize = 16;
 
@@ -97,7 +98,7 @@ pub async fn create_admin(
 // POST /admin/category { category } -> 200, 400, 401
 pub async fn create_category(
     State(app_state): State<Arc<AppState>>,
-    Json(category): Json<Category>,
+    Json(category): Json<crate::models::request::create::Category>,
 ) -> HandlerResult<()> {
     sqlx::query!(
         "INSERT INTO categories (name, description, parent_id) VALUES(?, ?, ?)",
@@ -113,9 +114,9 @@ pub async fn create_category(
 // DELETE /admin/category { category_id } -> 200, 400, 401
 pub async fn delete_category(
     State(app_state): State<Arc<AppState>>,
-    Json(category_id): Json<i32>,
+    Json(category): Json<crate::models::request::delete::Category>,
 ) -> HandlerResult<String> {
-    sqlx::query!("DELETE FROM categories WHERE id = ?", category_id)
+    sqlx::query!("DELETE FROM categories WHERE id = ?", category.category_id)
         .execute(&app_state.pg)
         .await
         .map_err(internal_error)?;
@@ -141,7 +142,7 @@ pub async fn update_category(
 // POST /admin/product { product } -> 200, 400, 401
 pub async fn create_product(
     State(app_state): State<Arc<AppState>>,
-    Json(product): Json<Product>,
+    Json(product): Json<crate::models::request::create::Product>,
 ) -> HandlerResult<()> {
     sqlx::query!(
         "INSERT INTO products (name, description, price) VALUES(?, ?, ?)",
@@ -157,9 +158,9 @@ pub async fn create_product(
 // DELETE /admin/product/:product_id -> 200, 400, 401
 pub async fn delete_product(
     State(app_state): State<Arc<AppState>>,
-    Json(product_id): Json<i32>,
+    Json(product): Json<crate::models::request::delete::Product>,
 ) -> HandlerResult<()> {
-    sqlx::query!("DELETE FROM products WHERE id = ?", product_id)
+    sqlx::query!("DELETE FROM products WHERE id = ?", product.product_id)
         .execute(&app_state.pg)
         .await
         .map_err(internal_error)?;
