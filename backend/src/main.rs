@@ -10,7 +10,12 @@ use axum::{
 use base64::Engine;
 use rand::RngCore;
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
-use std::{collections::HashMap, env, net::SocketAddr, sync::Arc};
+use std::{
+    collections::HashMap,
+    env,
+    net::{Ipv4Addr, SocketAddr, SocketAddrV4},
+    sync::Arc,
+};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
 use tracing::info;
 
@@ -71,8 +76,12 @@ async fn main() -> anyhow::Result<()> {
     // let admin_routes = Router::new();
     // let category_routes = Router::new();
     // let product_routes = Router::new();
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-
+    let addr = SocketAddr::V4(SocketAddrV4::new(
+        Ipv4Addr::new(127, 0, 0, 1),
+        env::var("AXUM_PORT")
+            .unwrap_or("3000".to_string())
+            .parse()?,
+    ));
     // merge routers
     let app = Router::new()
         // .route("/", post(test))
