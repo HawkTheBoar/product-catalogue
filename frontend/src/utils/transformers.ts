@@ -20,11 +20,12 @@ export const transformProduct = (backendProduct: BackendProduct): Product => {
  * Transform frontend product to backend format for API requests
  * Note: Backend stores price as integer (cents), frontend uses decimal (dollars)
  */
-export const transformProductToBackend = (product: Partial<Product>): Partial<BackendProduct> => {
+export const transformProductToBackend = (product: Partial<Product> & { category_id?: number | null }): Partial<BackendProduct> => {
   const backendProduct: Partial<BackendProduct> = {
     name: product.product_name,
     description: product.description || null,
     price: product.price ? Math.round(product.price * 100) : undefined, // Convert dollars to cents
+    category_id: product.category_id || null,
   };
 
   if (product.product_id) {

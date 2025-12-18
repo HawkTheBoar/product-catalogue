@@ -28,6 +28,11 @@ const SearchView: React.FC = () => {
     setError(null);
     try {
       const data = await searchProducts(query);
+      console.log('Search results received:', data);
+      console.log('Number of products:', data.length);
+      if (data.length > 0) {
+        console.log('First product:', data[0]);
+      }
       setProducts(data);
     } catch (err) {
       setError('Failed to search products. Please try again.');
