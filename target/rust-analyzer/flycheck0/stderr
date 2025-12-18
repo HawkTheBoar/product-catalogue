@@ -1,0 +1,575 @@
+   0.132782836s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint: stale: changed "/home/mistr/product-catalogue/backend/target/debug/build/libsqlite3-sys-21bb8517185288fd/out/bindgen.rs"
+   0.132795858s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint:           (vs) "/home/mistr/product-catalogue/backend/target/debug/.fingerprint/libsqlite3-sys-fbf9e78028413201/dep-lib-libsqlite3_sys"
+   0.132798885s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1765968330, nanos: 170116527 } < FileTime { seconds: 1766046653, nanos: 613574388 }
+   0.134177654s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint: stale: changed "/home/mistr/product-catalogue/backend/target/debug/build/libsqlite3-sys-21bb8517185288fd/out/bindgen.rs"
+   0.134184860s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint:           (vs) "/home/mistr/product-catalogue/backend/target/debug/.fingerprint/libsqlite3-sys-4008d47de91ef7cf/dep-lib-libsqlite3_sys"
+   0.134186734s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1765968324, nanos: 920993992 } < FileTime { seconds: 1766046653, nanos: 613574388 }
+   0.135053425s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint: fingerprint error for backend v0.1.0 (/home/mistr/product-catalogue/backend)/Check { test: false }/TargetInner { name: "backend", doc: true, ..: with_path("/home/mistr/product-catalogue/backend/src/main.rs", Edition2021) }
+   0.135067336s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/backend-f8a6f71327c2bb7b/bin-backend`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::build_runner::BuildRunner::compile
+   5: cargo::ops::cargo_compile::compile_ws
+   6: cargo::ops::cargo_compile::compile_with_exec
+   7: cargo::ops::cargo_compile::compile
+   8: cargo::commands::check::exec
+   9: cargo::cli::Exec::exec
+  10: cargo::cli::main
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace
+  13: std::rt::lang_start::{{closure}}
+  14: std::rt::lang_start_internal
+  15: main
+  16: __libc_start_call_main
+  17: __libc_start_main_alias_1
+  18: _start
+   0.138734575s  INFO prepare_target{force=false package_id=axum v0.8.7 target="axum"}: cargo::core::compiler::fingerprint: fingerprint error for axum v0.8.7/Check { test: false }/TargetInner { ..: lib_target("axum", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.8.7/src/lib.rs", Edition2021) }
+   0.138744661s  INFO prepare_target{force=false package_id=axum v0.8.7 target="axum"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/axum-46939812025c3a81/lib-axum`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::build_runner::BuildRunner::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: cargo::cli::Exec::exec
+  11: cargo::cli::main
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace
+  14: std::rt::lang_start::{{closure}}
+  15: std::rt::lang_start_internal
+  16: main
+  17: __libc_start_call_main
+  18: __libc_start_main_alias_1
+  19: _start
+   0.139688022s  INFO prepare_target{force=false package_id=serde_core v1.0.228 target="serde_core"}: cargo::core::compiler::fingerprint: fingerprint error for serde_core v1.0.228/Check { test: false }/TargetInner { ..: lib_target("serde_core", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/lib.rs", Edition2021) }
+   0.139694258s  INFO prepare_target{force=false package_id=serde_core v1.0.228 target="serde_core"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde_core-61e6f3e70471ec00/lib-serde_core`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::build_runner::BuildRunner::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: cargo::cli::Exec::exec
+  12: cargo::cli::main
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace
+  15: std::rt::lang_start::{{closure}}
+  16: std::rt::lang_start_internal
+  17: main
+  18: __libc_start_call_main
+  19: __libc_start_main_alias_1
+  20: _start
+   0.139808889s  INFO prepare_target{force=false package_id=serde_core v1.0.228 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for serde_core v1.0.228/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/build.rs", Edition2021) }
+   0.139812981s  INFO prepare_target{force=false package_id=serde_core v1.0.228 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde_core-3cba03aea4328fba/run-build-script-build-script-build`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::custom_build::build_work
+   4: cargo::core::compiler::custom_build::prepare
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::compile
+   9: cargo::core::compiler::build_runner::BuildRunner::compile
+  10: cargo::ops::cargo_compile::compile_ws
+  11: cargo::ops::cargo_compile::compile_with_exec
+  12: cargo::ops::cargo_compile::compile
+  13: cargo::commands::check::exec
+  14: cargo::cli::Exec::exec
+  15: cargo::cli::main
+  16: cargo::main
+  17: std::sys::backtrace::__rust_begin_short_backtrace
+  18: std::rt::lang_start::{{closure}}
+  19: std::rt::lang_start_internal
+  20: main
+  21: __libc_start_call_main
+  22: __libc_start_main_alias_1
+  23: _start
+   0.139863517s  INFO prepare_target{force=false package_id=serde_core v1.0.228 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for serde_core v1.0.228/Build/TargetInner { ..: custom_build_target("build-script-build", "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/build.rs", Edition2021) }
+   0.139866168s  INFO prepare_target{force=false package_id=serde_core v1.0.228 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde_core-aba18c75b3981b1c/build-script-build-script-build`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: cargo::core::compiler::build_runner::BuildRunner::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: cargo::cli::Exec::exec
+  14: cargo::cli::main
+  15: cargo::main
+  16: std::sys::backtrace::__rust_begin_short_backtrace
+  17: std::rt::lang_start::{{closure}}
+  18: std::rt::lang_start_internal
+  19: main
+  20: __libc_start_call_main
+  21: __libc_start_main_alias_1
+  22: _start
+   0.139947124s  INFO prepare_target{force=false package_id=serde_json v1.0.145 target="serde_json"}: cargo::core::compiler::fingerprint: fingerprint error for serde_json v1.0.145/Check { test: false }/TargetInner { ..: lib_target("serde_json", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/src/lib.rs", Edition2021) }
+   0.139951814s  INFO prepare_target{force=false package_id=serde_json v1.0.145 target="serde_json"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde_json-14de770fb0acb612/lib-serde_json`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::build_runner::BuildRunner::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: cargo::cli::Exec::exec
+  12: cargo::cli::main
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace
+  15: std::rt::lang_start::{{closure}}
+  16: std::rt::lang_start_internal
+  17: main
+  18: __libc_start_call_main
+  19: __libc_start_main_alias_1
+  20: _start
+   0.140105522s  INFO prepare_target{force=false package_id=serde_path_to_error v0.1.20 target="serde_path_to_error"}: cargo::core::compiler::fingerprint: fingerprint error for serde_path_to_error v0.1.20/Check { test: false }/TargetInner { ..: lib_target("serde_path_to_error", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_path_to_error-0.1.20/src/lib.rs", Edition2021) }
+   0.140110228s  INFO prepare_target{force=false package_id=serde_path_to_error v0.1.20 target="serde_path_to_error"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde_path_to_error-dfecb63afc6ada4b/lib-serde_path_to_error`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::build_runner::BuildRunner::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: cargo::cli::Exec::exec
+  12: cargo::cli::main
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace
+  15: std::rt::lang_start::{{closure}}
+  16: std::rt::lang_start_internal
+  17: main
+  18: __libc_start_call_main
+  19: __libc_start_main_alias_1
+  20: _start
+   0.140180866s  INFO prepare_target{force=false package_id=serde_urlencoded v0.7.1 target="serde_urlencoded"}: cargo::core::compiler::fingerprint: fingerprint error for serde_urlencoded v0.7.1/Check { test: false }/TargetInner { name_inferred: true, tested: false, ..: lib_target("serde_urlencoded", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_urlencoded-0.7.1/src/lib.rs", Edition2018) }
+   0.140185291s  INFO prepare_target{force=false package_id=serde_urlencoded v0.7.1 target="serde_urlencoded"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde_urlencoded-d2900f025078a0af/lib-serde_urlencoded`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::build_runner::BuildRunner::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: cargo::cli::Exec::exec
+  12: cargo::cli::main
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace
+  15: std::rt::lang_start::{{closure}}
+  16: std::rt::lang_start_internal
+  17: main
+  18: __libc_start_call_main
+  19: __libc_start_main_alias_1
+  20: _start
+   0.140276141s  INFO prepare_target{force=false package_id=serde v1.0.228 target="serde"}: cargo::core::compiler::fingerprint: fingerprint error for serde v1.0.228/Check { test: false }/TargetInner { ..: lib_target("serde", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs", Edition2021) }
+   0.140280029s  INFO prepare_target{force=false package_id=serde v1.0.228 target="serde"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/serde-39ac44b7cb53d1a3/lib-serde`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::build_runner::BuildRunner::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: cargo::cli::Exec::exec
+  13: cargo::cli::main
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace
+  16: std::rt::lang_start::{{closure}}
+  17: std::rt::lang_start_internal
+  18: main
+  19: __libc_start_call_main
+  20: __libc_start_main_alias_1
+  21: _start
+   0.140735323s  INFO prepare_target{force=false package_id=deadpool-redis v0.22.0 target="deadpool_redis"}: cargo::core::compiler::fingerprint: fingerprint error for deadpool-redis v0.22.0/Check { test: false }/TargetInner { ..: lib_target("deadpool_redis", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deadpool-redis-0.22.0/src/lib.rs", Edition2021) }
+   0.140740275s  INFO prepare_target{force=false package_id=deadpool-redis v0.22.0 target="deadpool_redis"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/deadpool-redis-8dbf4caa13923278/lib-deadpool_redis`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::build_runner::BuildRunner::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: cargo::cli::Exec::exec
+  11: cargo::cli::main
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace
+  14: std::rt::lang_start::{{closure}}
+  15: std::rt::lang_start_internal
+  16: main
+  17: __libc_start_call_main
+  18: __libc_start_main_alias_1
+  19: _start
+   0.140918459s  INFO prepare_target{force=false package_id=redis v0.32.7 target="redis"}: cargo::core::compiler::fingerprint: fingerprint error for redis v0.32.7/Check { test: false }/TargetInner { benched: false, ..: lib_target("redis", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/redis-0.32.7/src/lib.rs", Edition2021) }
+   0.140922765s  INFO prepare_target{force=false package_id=redis v0.32.7 target="redis"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/redis-5a2071923fad665b/lib-redis`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::build_runner::BuildRunner::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: cargo::cli::Exec::exec
+  12: cargo::cli::main
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace
+  15: std::rt::lang_start::{{closure}}
+  16: std::rt::lang_start_internal
+  17: main
+  18: __libc_start_call_main
+  19: __libc_start_main_alias_1
+  20: _start
+   0.141246329s  INFO prepare_target{force=false package_id=url v2.5.7 target="url"}: cargo::core::compiler::fingerprint: fingerprint error for url v2.5.7/Check { test: false }/TargetInner { ..: lib_target("url", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/url-2.5.7/src/lib.rs", Edition2018) }
+   0.141250745s  INFO prepare_target{force=false package_id=url v2.5.7 target="url"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/url-2d8890aafdb24922/lib-url`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::build_runner::BuildRunner::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: cargo::cli::Exec::exec
+  13: cargo::cli::main
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace
+  16: std::rt::lang_start::{{closure}}
+  17: std::rt::lang_start_internal
+  18: main
+  19: __libc_start_call_main
+  20: __libc_start_main_alias_1
+  21: _start
+   0.141900900s  INFO prepare_target{force=false package_id=sqlx v0.6.3 target="sqlx"}: cargo::core::compiler::fingerprint: fingerprint error for sqlx v0.6.3/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("sqlx", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-0.6.3/src/lib.rs", Edition2021) }
+   0.141906884s  INFO prepare_target{force=false package_id=sqlx v0.6.3 target="sqlx"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/sqlx-7e65418a2cd8d8d0/lib-sqlx`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::build_runner::BuildRunner::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: cargo::cli::Exec::exec
+  11: cargo::cli::main
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace
+  14: std::rt::lang_start::{{closure}}
+  15: std::rt::lang_start_internal
+  16: main
+  17: __libc_start_call_main
+  18: __libc_start_main_alias_1
+  19: _start
+   0.142255723s  INFO prepare_target{force=false package_id=sqlx-core v0.6.3 target="sqlx_core"}: cargo::core::compiler::fingerprint: fingerprint error for sqlx-core v0.6.3/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("sqlx_core", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-core-0.6.3/src/lib.rs", Edition2021) }
+   0.142260548s  INFO prepare_target{force=false package_id=sqlx-core v0.6.3 target="sqlx_core"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/sqlx-core-91f1eecb70d9d03c/lib-sqlx_core`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::build_runner::BuildRunner::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: cargo::cli::Exec::exec
+  12: cargo::cli::main
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace
+  15: std::rt::lang_start::{{closure}}
+  16: std::rt::lang_start_internal
+  17: main
+  18: __libc_start_call_main
+  19: __libc_start_main_alias_1
+  20: _start
+   0.143242181s  INFO prepare_target{force=false package_id=libsqlite3-sys v0.24.2 target="libsqlite3_sys"}: cargo::core::compiler::fingerprint: fingerprint dirty for libsqlite3-sys v0.24.2/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("libsqlite3_sys", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libsqlite3-sys-0.24.2/src/lib.rs", Edition2018) }
+   0.143249012s  INFO prepare_target{force=false package_id=libsqlite3-sys v0.24.2 target="libsqlite3_sys"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "build_script_build", old_fingerprint: 15897841779558357273, new_name: "build_script_build", new_fingerprint: 10395355111014534948 }
+   0.143371309s  INFO prepare_target{force=false package_id=libsqlite3-sys v0.24.2 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint dirty for libsqlite3-sys v0.24.2/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libsqlite3-sys-0.24.2/build.rs", Edition2018) }
+   0.143376916s  INFO prepare_target{force=false package_id=libsqlite3-sys v0.24.2 target="build-script-build"}: cargo::core::compiler::fingerprint:     dirty: EnvVarChanged { name: "CC", old_value: Some("gcc"), new_value: None }
+   0.143541339s  INFO prepare_target{force=false package_id=rustls v0.20.9 target="rustls"}: cargo::core::compiler::fingerprint: fingerprint dirty for rustls v0.20.9/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("rustls", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustls-0.20.9/src/lib.rs", Edition2018) }
+   0.143545941s  INFO prepare_target{force=false package_id=rustls v0.20.9 target="rustls"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "sct", old_fingerprint: 8118796000072906413, new_name: "sct", new_fingerprint: 16830333947442040990 }
+   0.143788553s  INFO prepare_target{force=false package_id=sct v0.7.1 target="sct"}: cargo::core::compiler::fingerprint: fingerprint dirty for sct v0.7.1/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("sct", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sct-0.7.1/src/lib.rs", Edition2021) }
+   0.143793622s  INFO prepare_target{force=false package_id=sct v0.7.1 target="sct"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "ring", old_fingerprint: 5375319847079183432, new_name: "ring", new_fingerprint: 5398891307436903599 }
+   0.143862948s  INFO prepare_target{force=false package_id=ring v0.17.14 target="ring"}: cargo::core::compiler::fingerprint: fingerprint dirty for ring v0.17.14/Check { test: false }/TargetInner { ..: lib_target("ring", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ring-0.17.14/src/lib.rs", Edition2021) }
+   0.143867367s  INFO prepare_target{force=false package_id=ring v0.17.14 target="ring"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "build_script_build", old_fingerprint: 17330352474471503843, new_name: "build_script_build", new_fingerprint: 3309175777574540949 }
+   0.144121730s  INFO prepare_target{force=false package_id=ring v0.17.14 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint dirty for ring v0.17.14/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ring-0.17.14/build.rs", Edition2021) }
+   0.144128234s  INFO prepare_target{force=false package_id=ring v0.17.14 target="build-script-build"}: cargo::core::compiler::fingerprint:     dirty: EnvVarChanged { name: "CC", old_value: Some("gcc"), new_value: None }
+   0.144175524s  INFO prepare_target{force=false package_id=webpki v0.22.4 target="webpki"}: cargo::core::compiler::fingerprint: fingerprint dirty for webpki v0.22.4/Check { test: false }/TargetInner { ..: lib_target("webpki", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webpki-0.22.4/src/lib.rs", Edition2018) }
+   0.144179848s  INFO prepare_target{force=false package_id=webpki v0.22.4 target="webpki"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "ring", old_fingerprint: 5375319847079183432, new_name: "ring", new_fingerprint: 5398891307436903599 }
+   0.144336844s  INFO prepare_target{force=false package_id=sqlx-rt v0.6.3 target="sqlx_rt"}: cargo::core::compiler::fingerprint: fingerprint dirty for sqlx-rt v0.6.3/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("sqlx_rt", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-rt-0.6.3/src/lib.rs", Edition2021) }
+   0.144341438s  INFO prepare_target{force=false package_id=sqlx-rt v0.6.3 target="sqlx_rt"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "tokio_rustls", old_fingerprint: 15234984756521292199, new_name: "tokio_rustls", new_fingerprint: 12351320499500499605 }
+   0.144442181s  INFO prepare_target{force=false package_id=tokio-rustls v0.23.4 target="tokio_rustls"}: cargo::core::compiler::fingerprint: fingerprint dirty for tokio-rustls v0.23.4/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("tokio_rustls", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-rustls-0.23.4/src/lib.rs", Edition2018) }
+   0.144447274s  INFO prepare_target{force=false package_id=tokio-rustls v0.23.4 target="tokio_rustls"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "webpki", old_fingerprint: 17315547086774095267, new_name: "webpki", new_fingerprint: 8529156592347300982 }
+   0.144735125s  INFO prepare_target{force=false package_id=webpki-roots v0.22.6 target="webpki_roots"}: cargo::core::compiler::fingerprint: fingerprint dirty for webpki-roots v0.22.6/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("webpki_roots", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webpki-roots-0.22.6/src/lib.rs", Edition2018) }
+   0.144740682s  INFO prepare_target{force=false package_id=webpki-roots v0.22.6 target="webpki_roots"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "webpki", old_fingerprint: 17315547086774095267, new_name: "webpki", new_fingerprint: 8529156592347300982 }
+   0.144909105s  INFO prepare_target{force=false package_id=sqlx-macros v0.6.3 target="sqlx_macros"}: cargo::core::compiler::fingerprint: fingerprint dirty for sqlx-macros v0.6.3/Build/TargetInner { name_inferred: true, for_host: true, proc_macro: true, ..: lib_target("sqlx_macros", ["proc-macro"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-macros-0.6.3/src/lib.rs", Edition2021) }
+   0.144914745s  INFO prepare_target{force=false package_id=sqlx-macros v0.6.3 target="sqlx_macros"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "sqlx_core", old_fingerprint: 4356737696709378186, new_name: "sqlx_core", new_fingerprint: 8101741881983853730 }
+   0.145700771s  INFO prepare_target{force=false package_id=sqlx-core v0.6.3 target="sqlx_core"}: cargo::core::compiler::fingerprint: fingerprint dirty for sqlx-core v0.6.3/Build/TargetInner { name_inferred: true, ..: lib_target("sqlx_core", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-core-0.6.3/src/lib.rs", Edition2021) }
+   0.145707997s  INFO prepare_target{force=false package_id=sqlx-core v0.6.3 target="sqlx_core"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "libsqlite3_sys", old_fingerprint: 10886172503490742356, new_name: "libsqlite3_sys", new_fingerprint: 2282081500503458775 }
+   0.146577055s  INFO prepare_target{force=false package_id=libsqlite3-sys v0.24.2 target="libsqlite3_sys"}: cargo::core::compiler::fingerprint: fingerprint dirty for libsqlite3-sys v0.24.2/Build/TargetInner { name_inferred: true, ..: lib_target("libsqlite3_sys", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libsqlite3-sys-0.24.2/src/lib.rs", Edition2018) }
+   0.146584511s  INFO prepare_target{force=false package_id=libsqlite3-sys v0.24.2 target="libsqlite3_sys"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "build_script_build", old_fingerprint: 15897841779558357273, new_name: "build_script_build", new_fingerprint: 10395355111014534948 }
+   0.146678079s  INFO prepare_target{force=false package_id=rustls v0.20.9 target="rustls"}: cargo::core::compiler::fingerprint: fingerprint dirty for rustls v0.20.9/Build/TargetInner { name_inferred: true, ..: lib_target("rustls", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustls-0.20.9/src/lib.rs", Edition2018) }
+   0.146683567s  INFO prepare_target{force=false package_id=rustls v0.20.9 target="rustls"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "sct", old_fingerprint: 5441136577253829779, new_name: "sct", new_fingerprint: 5500178202361107643 }
+   0.146813211s  INFO prepare_target{force=false package_id=sct v0.7.1 target="sct"}: cargo::core::compiler::fingerprint: fingerprint dirty for sct v0.7.1/Build/TargetInner { name_inferred: true, ..: lib_target("sct", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sct-0.7.1/src/lib.rs", Edition2021) }
+   0.146817484s  INFO prepare_target{force=false package_id=sct v0.7.1 target="sct"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "ring", old_fingerprint: 13655710044296013524, new_name: "ring", new_fingerprint: 1373777202821352983 }
+   0.146881994s  INFO prepare_target{force=false package_id=ring v0.17.14 target="ring"}: cargo::core::compiler::fingerprint: fingerprint dirty for ring v0.17.14/Build/TargetInner { ..: lib_target("ring", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ring-0.17.14/src/lib.rs", Edition2021) }
+   0.146885904s  INFO prepare_target{force=false package_id=ring v0.17.14 target="ring"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "build_script_build", old_fingerprint: 17330352474471503843, new_name: "build_script_build", new_fingerprint: 3309175777574540949 }
+   0.147062903s  INFO prepare_target{force=false package_id=webpki v0.22.4 target="webpki"}: cargo::core::compiler::fingerprint: fingerprint dirty for webpki v0.22.4/Build/TargetInner { ..: lib_target("webpki", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webpki-0.22.4/src/lib.rs", Edition2018) }
+   0.147067760s  INFO prepare_target{force=false package_id=webpki v0.22.4 target="webpki"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "ring", old_fingerprint: 13655710044296013524, new_name: "ring", new_fingerprint: 1373777202821352983 }
+   0.147190908s  INFO prepare_target{force=false package_id=sqlx-rt v0.6.3 target="sqlx_rt"}: cargo::core::compiler::fingerprint: fingerprint dirty for sqlx-rt v0.6.3/Build/TargetInner { name_inferred: true, ..: lib_target("sqlx_rt", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-rt-0.6.3/src/lib.rs", Edition2021) }
+   0.147195275s  INFO prepare_target{force=false package_id=sqlx-rt v0.6.3 target="sqlx_rt"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "tokio_rustls", old_fingerprint: 17444920387323215621, new_name: "tokio_rustls", new_fingerprint: 12724983435560306320 }
+   0.147315189s  INFO prepare_target{force=false package_id=tokio-rustls v0.23.4 target="tokio_rustls"}: cargo::core::compiler::fingerprint: fingerprint dirty for tokio-rustls v0.23.4/Build/TargetInner { name_inferred: true, ..: lib_target("tokio_rustls", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-rustls-0.23.4/src/lib.rs", Edition2018) }
+   0.147319541s  INFO prepare_target{force=false package_id=tokio-rustls v0.23.4 target="tokio_rustls"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "webpki", old_fingerprint: 13074550410595935933, new_name: "webpki", new_fingerprint: 55656874599023644 }
+   0.147667065s  INFO prepare_target{force=false package_id=webpki-roots v0.22.6 target="webpki_roots"}: cargo::core::compiler::fingerprint: fingerprint dirty for webpki-roots v0.22.6/Build/TargetInner { name_inferred: true, ..: lib_target("webpki_roots", ["lib"], "/home/mistr/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webpki-roots-0.22.6/src/lib.rs", Edition2018) }
+   0.147671973s  INFO prepare_target{force=false package_id=webpki-roots v0.22.6 target="webpki_roots"}: cargo::core::compiler::fingerprint:     dirty: UnitDependencyInfoChanged { old_name: "webpki", old_fingerprint: 13074550410595935933, new_name: "webpki", new_fingerprint: 55656874599023644 }
+   0.147930643s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint: fingerprint error for backend v0.1.0 (/home/mistr/product-catalogue/backend)/Check { test: true }/TargetInner { name: "backend", doc: true, ..: with_path("/home/mistr/product-catalogue/backend/src/main.rs", Edition2021) }
+   0.147935763s  INFO prepare_target{force=false package_id=backend v0.1.0 (/home/mistr/product-catalogue/backend) target="backend"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/mistr/product-catalogue/backend/target/debug/.fingerprint/backend-321a1057197e1c3a/test-bin-backend`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <E as anyhow::context::ext::StdError>::ext_context
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::prepare_target
+   3: cargo::core::compiler::compile
+   4: cargo::core::compiler::build_runner::BuildRunner::compile
+   5: cargo::ops::cargo_compile::compile_ws
+   6: cargo::ops::cargo_compile::compile_with_exec
+   7: cargo::ops::cargo_compile::compile
+   8: cargo::commands::check::exec
+   9: cargo::cli::Exec::exec
+  10: cargo::cli::main
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace
+  13: std::rt::lang_start::{{closure}}
+  14: std::rt::lang_start_internal
+  15: main
+  16: __libc_start_call_main
+  17: __libc_start_main_alias_1
+  18: _start
+   Compiling ring v0.17.14
+   Compiling serde_core v1.0.228
+   Compiling libsqlite3-sys v0.24.2
+warning: libsqlite3-sys@0.24.2: Compiler family detection failed due to error: ToolNotFound: failed to find tool "cc": No such file or directory (os error 2)
+error: failed to run custom build command for `libsqlite3-sys v0.24.2`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  process didn't exit successfully: `/home/mistr/product-catalogue/backend/target/debug/build/libsqlite3-sys-efc3483b50ccfc4a/build-script-build` (exit status: 1)
+  --- stdout
+  cargo:rerun-if-changed=sqlite3/sqlite3.c
+  cargo:rerun-if-changed=sqlite3/wasm32-wasi-vfs.c
+  cargo:rerun-if-env-changed=SQLITE_MAX_VARIABLE_NUMBER
+  cargo:rerun-if-env-changed=SQLITE_MAX_EXPR_DEPTH
+  cargo:rerun-if-env-changed=LIBSQLITE3_FLAGS
+  OUT_DIR = Some(/home/mistr/product-catalogue/backend/target/debug/build/libsqlite3-sys-21bb8517185288fd/out)
+  OPT_LEVEL = Some(0)
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_ENCODED_RUSTFLAGS = Some()
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu
+  CC_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu
+  CC_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_CC
+  HOST_CC = None
+  cargo:rerun-if-env-changed=CC
+  CC = None
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:warning=Compiler family detection failed due to error: ToolNotFound: failed to find tool "cc": No such file or directory (os error 2)
+  RUSTC_WRAPPER = None
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  DEBUG = Some(true)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  cargo:rerun-if-env-changed=CFLAGS
+  CFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CFLAGS
+  HOST_CFLAGS = None
+  cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu
+  CFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu
+  CFLAGS_x86_64-unknown-linux-gnu = None
+
+  --- stderr
+
+
+  error occurred in cc-rs: failed to find tool "cc": No such file or directory (os error 2)
+
+
+warning: build failed, waiting for other jobs to finish...
+warning: ring@0.17.14: Compiler family detection failed due to error: ToolNotFound: failed to find tool "cc": No such file or directory (os error 2)
+warning: ring@0.17.14: Compiler family detection failed due to error: ToolNotFound: failed to find tool "cc": No such file or directory (os error 2)
+error: failed to run custom build command for `ring v0.17.14`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  process didn't exit successfully: `/home/mistr/product-catalogue/backend/target/debug/build/ring-c0b7423ed2a07bd9/build-script-build` (exit status: 1)
+  --- stdout
+  cargo:rerun-if-env-changed=CARGO_MANIFEST_DIR
+  cargo:rerun-if-env-changed=CARGO_PKG_NAME
+  cargo:rerun-if-env-changed=CARGO_PKG_VERSION_MAJOR
+  cargo:rerun-if-env-changed=CARGO_PKG_VERSION_MINOR
+  cargo:rerun-if-env-changed=CARGO_PKG_VERSION_PATCH
+  cargo:rerun-if-env-changed=CARGO_PKG_VERSION_PRE
+  cargo:rerun-if-env-changed=CARGO_MANIFEST_LINKS
+  cargo:rerun-if-env-changed=RING_PREGENERATE_ASM
+  cargo:rerun-if-env-changed=OUT_DIR
+  cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ARCH
+  cargo:rerun-if-env-changed=CARGO_CFG_TARGET_OS
+  cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ENV
+  cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ENDIAN
+  OPT_LEVEL = Some(0)
+  OUT_DIR = Some(/home/mistr/product-catalogue/backend/target/debug/build/ring-ed2706a812e79e86/out)
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_ENCODED_RUSTFLAGS = Some()
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu
+  CC_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu
+  CC_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_CC
+  HOST_CC = None
+  cargo:rerun-if-env-changed=CC
+  CC = None
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:warning=Compiler family detection failed due to error: ToolNotFound: failed to find tool "cc": No such file or directory (os error 2)
+  RUSTC_WRAPPER = None
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  DEBUG = Some(true)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  cargo:rerun-if-env-changed=CFLAGS
+  CFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CFLAGS
+  HOST_CFLAGS = None
+  cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu
+  CFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu
+  CFLAGS_x86_64-unknown-linux-gnu = None
+  cargo:warning=Compiler family detection failed due to error: ToolNotFound: failed to find tool "cc": No such file or directory (os error 2)
+
+  --- stderr
+
+
+  error occurred in cc-rs: failed to find tool "cc": No such file or directory (os error 2)
+
+
+error: could not compile `serde_core` (build script) due to 1 previous error

@@ -53,10 +53,9 @@ pub async fn product_page(
 // GET /product/search/:query/:page -> 200 { product[] }, 404
 pub async fn product_search(
     app_state: State<Arc<AppState>>,
-    Path(query): Path<String>,
-    Path(page): Path<i64>,
+    Path((query, page)): Path<(String, i64)>,
 ) -> HandlerResult<Json<Vec<Product>>> {
-    let redis_key = format!("/product/search/{}/{}", &query, &page);
+    let redis_key = format!("/product/search/{}", &query);
     let cached: Option<Vec<Product>> = redis_get(&redis_key, &app_state).await?;
     if let Some(cached) = cached {
         info!("Using redis cached response!!");
@@ -90,7 +89,7 @@ pub async fn product_search(
 // GET /product/:id -> 200 { product }, 404
 pub async fn product_get(
     app_state: State<Arc<AppState>>,
-    Path(product_id): Path<i64>,
+    Path(product_id): Path<u32>,
 ) -> HandlerResult<Json<Product>> {
     let product = sqlx::query_as!(Product, "SELECT * from products WHERE id = ?", product_id)
         .fetch_optional(&app_state.pg)

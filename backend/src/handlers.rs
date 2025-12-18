@@ -3,6 +3,7 @@ use std::sync::Arc;
 use axum::http::StatusCode;
 use redis::AsyncCommands;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use tracing::info;
 
 use crate::AppState;
 
@@ -26,7 +27,11 @@ where
     let mut redis_conn = app_state.redis.get().await.map_err(internal_error)?;
 
     let json: Option<String> = redis_conn.get(key).await.map_err(internal_error)?;
-
+    if let Some(ref json) = json {
+        info!("obtained: {}", json);
+    } else {
+        info!("obtained none");
+    }
     match json {
         Some(value) => {
             let parsed = serde_json::from_str(&value).map_err(internal_error)?;
