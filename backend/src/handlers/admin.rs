@@ -6,9 +6,7 @@ use crate::{
     models::{Admin, Category, Product},
     AppState,
 };
-use axum::http::{HeaderMap, Request};
-use axum::middleware::Next;
-use axum::response::{IntoResponse, Response};
+use axum::http::HeaderMap;
 use axum::{
     extract::{Path, State},
     http::{header, HeaderName, StatusCode},
@@ -28,59 +26,7 @@ pub struct LoginPayload {
     password: String,
 }
 // admin middleware
-pub mod middleware {
-    use std::sync::Arc;
-
-    use crate::AppState;
-    use axum::http::Request;
-    use axum::middleware::Next;
-    use axum::response::{IntoResponse, Response};
-    use axum::{
-        extract::State,
-        http::{header, StatusCode},
-        Json,
-    };
-    use tracing::info;
-    pub async fn test<B>(request: Request<B>, next: Next<B>) -> Response {
-        info!("processing request: {}", request.uri());
-        next.run(request).await
-    }
-    pub async fn admin_auth<B>(
-        State(app_state): State<Arc<AppState>>,
-        request: Request<B>,
-        next: Next<B>,
-    ) -> Response {
-        let name = "auth_token";
-        let token = request
-            .headers()
-            .get(header::COOKIE)
-            .and_then(|h| h.to_str().ok())
-            .and_then(|cookies| {
-                cookies.split("; ").find_map(|cookie| {
-                    let (k, v) = cookie.split_once('=')?;
-                    (k == name).then(|| v.to_string())
-                })
-            });
-        if let Some(token) = token {
-            if token_exists(token, app_state.clone())
-                .await
-                .is_ok_and(|x| x)
-            {
-                return next.run(request).await;
-            } else {
-                return (StatusCode::UNAUTHORIZED, "Unauthorized access").into_response();
-            }
-        } else {
-            (StatusCode::UNAUTHORIZED, "Unauthorized access").into_response()
-        }
-    }
-    async fn token_exists(token: String, app_state: Arc<AppState>) -> anyhow::Result<bool> {
-        let t = sqlx::query!("SELECT * FROM tokens WHERE token = ?", token)
-            .fetch_optional(&app_state.pg)
-            .await?;
-        Ok(t.is_some())
-    }
-}
+pub async fn admin_auth() {}
 // POST /admin/login { username, password } -> 200 { SET_COOKIE: session_token }, 400
 pub async fn login(
     State(app_state): State<Arc<AppState>>,
