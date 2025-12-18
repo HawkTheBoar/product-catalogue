@@ -11,8 +11,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Chip,
-  OutlinedInput,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import type { Product, Category } from '../../types';
@@ -30,8 +28,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ open, onClose, onSubmit, prod
     product_name: '',
     description: '',
     price: '',
+    category_id: null as number | null,
   });
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
@@ -41,16 +39,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ open, onClose, onSubmit, prod
         product_name: product.product_name,
         description: product.description || '',
         price: product.price.toString(),
+        category_id: null, // Backend doesn't return category_id in Product type
       });
-      // Note: Would need to fetch product categories from API
-      setSelectedCategories([]);
     } else {
       setFormData({
         product_name: '',
         description: '',
         price: '',
+        category_id: null,
       });
-      setSelectedCategories([]);
     }
     setErrors({});
   }, [product, open]);
@@ -82,10 +79,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ open, onClose, onSubmit, prod
 
     setLoading(true);
     try {
-      const productData: Partial<Product> = {
+      const productData: any = {
         product_name: formData.product_name,
         description: formData.description,
         price: parseFloat(formData.price),
+        category_id: formData.category_id,
       };
 
       if (product) {
@@ -102,9 +100,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ open, onClose, onSubmit, prod
     }
   };
 
-  const handleCategoryChange = (event: SelectChangeEvent<number[]>) => {
+  const handleCategoryChange = (event: SelectChangeEvent<number>) => {
     const value = event.target.value;
-    setSelectedCategories(typeof value === 'string' ? [] : value);
+    setFormData({ ...formData, category_id: typeof value === 'number' ? value : null });
   };
 
   return (
@@ -149,21 +147,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ open, onClose, onSubmit, prod
             />
 
             <FormControl fullWidth>
-              <InputLabel>Categories</InputLabel>
+              <InputLabel>Category</InputLabel>
               <Select
-                multiple
-                value={selectedCategories}
+                value={formData.category_id || ''}
                 onChange={handleCategoryChange}
-                input={<OutlinedInput label="Categories" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => {
-                      const category = categories.find((c) => c.category_id === value);
-                      return <Chip key={value} label={category?.category_name} size="small" />;
-                    })}
-                  </Box>
-                )}
+                label="Category"
               >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 {categories.map((category) => (
                   <MenuItem key={category.category_id} value={category.category_id}>
                     {category.category_name}
