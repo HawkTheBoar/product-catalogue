@@ -71,9 +71,10 @@ impl TryFrom<&SubCategory> for Category {
         }
     }
 }
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Token {
     pub token: String,
-    pub admin_id: String,
+    pub admin_id: Option<i64>,
     // pub created_at
 }
 pub mod request {

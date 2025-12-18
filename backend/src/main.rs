@@ -19,11 +19,12 @@ use std::{
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
 use tower_http::trace::TraceLayer;
 use tracing::info;
+use tracing_subscriber::fmt::layer;
 
 use crate::handlers::{
     admin::{
-        create_admin, create_category, create_product, delete_category, delete_product, login,
-        update_category, update_product,
+        self, create_admin, create_category, create_product, delete_category, delete_product,
+        login, update_category, update_product,
     },
     common::{
         category_get, parent_categories_get, product_get, product_page, product_search, test,
@@ -96,7 +97,13 @@ async fn main() -> anyhow::Result<()> {
                 .patch(update_product)
                 .post(create_product),
         )
+        .layer(axum::middleware::from_fn(admin::middleware::test))
+        .layer(axum::middleware::from_fn_with_state(
+            state.clone(),
+            admin::middleware::admin_auth,
+        ))
         .route("/login", post(login));
+
     // merge routers
     let app = Router::new()
         // .route("/", post(test))
