@@ -48,13 +48,13 @@ api.interceptors.request.use((config) => {
 
 /**
  * Get paginated products
- * GET /product/:page -> 200 { product[] }, 404
+ * GET /products/:page -> 200 { product[] }, 404
  */
 export const getProducts = async (page: number = 1): Promise<Product[]> => {
   if (USE_MOCK_DATA) {
     return mockApi.getProducts(page);
   }
-  const response = await api.get<BackendProduct[]>(`/product/${page}`);
+  const response = await api.get<BackendProduct[]>(`/products/${page}`);
   return transformProducts(response.data);
 };
 
@@ -145,7 +145,7 @@ export const adminLogin = async (credentials: AdminLogin): Promise<string> => {
  */
 export const createCategory = async (category: Partial<Category>): Promise<Category> => {
   const backendCategory = transformCategoryToBackend(category);
-  const response = await api.post<BackendCategory>('/category', backendCategory);
+  const response = await api.post<BackendCategory>('/admin/category', backendCategory);
 
   // Backend might return empty response - use input data as fallback
   if (response.data && response.data.id) {
@@ -163,12 +163,12 @@ export const createCategory = async (category: Partial<Category>): Promise<Categ
 
 /**
  * Update category (admin)
- * PATCH /category { category } -> 200, 400, 401
+ * PATCH /admin/category { category } -> 200, 400, 401
  * Note: Backend may return empty response, so we return the input data
  */
 export const updateCategory = async (category: Category): Promise<Category> => {
   const backendCategory = transformCategoryToBackend(category);
-  const response = await api.patch<BackendCategory>('/category', backendCategory);
+  const response = await api.patch<BackendCategory>('/admin/category', backendCategory);
 
   // Backend might return empty response - use input data as fallback
   if (response.data && response.data.id) {
@@ -181,20 +181,20 @@ export const updateCategory = async (category: Category): Promise<Category> => {
 
 /**
  * Delete category (admin)
- * DELETE /category?id={id} -> 200, 400, 401
+ * DELETE /admin/category?id={id} -> 200, 400, 401
  */
 export const deleteCategory = async (categoryId: number): Promise<void> => {
-  await api.delete(`/category`, { params: { id: categoryId } });
+  await api.delete(`/admin/category`, { params: { id: categoryId } });
 };
 
 /**
  * Create product (admin)
- * POST /product { product } -> 200, 400, 401
+ * POST /admin/product { product } -> 200, 400, 401
  * Note: Backend may return empty response, so we return the input data
  */
 export const createProduct = async (product: Partial<Product>): Promise<Product> => {
   const backendProduct = transformProductToBackend(product);
-  const response = await api.post<BackendProduct>('/product', backendProduct);
+  const response = await api.post<BackendProduct>('/admin/product', backendProduct);
 
   // Backend might return empty response - use input data as fallback
   if (response.data && response.data.id) {
@@ -214,12 +214,12 @@ export const createProduct = async (product: Partial<Product>): Promise<Product>
 
 /**
  * Update product (admin)
- * PATCH /product { product } -> 200, 400, 401
+ * PATCH /admin/product { product } -> 200, 400, 401
  * Note: Backend may return empty response, so we return the input data
  */
 export const updateProduct = async (product: Product): Promise<Product> => {
   const backendProduct = transformProductToBackend(product);
-  const response = await api.patch<BackendProduct>('/product', backendProduct);
+  const response = await api.patch<BackendProduct>('/admin/product', backendProduct);
 
   // Backend might return empty response - use input data as fallback
   if (response.data && response.data.id) {
@@ -235,10 +235,10 @@ export const updateProduct = async (product: Product): Promise<Product> => {
 
 /**
  * Delete product (admin)
- * DELETE /product?id={id} -> 200, 400, 401
+ * DELETE /admin/product?id={id} -> 200, 400, 401
  */
 export const deleteProduct = async (productId: number): Promise<void> => {
-  await api.delete(`/product`, { params: { id: productId } });
+  await api.delete(`/admin/product`, { params: { id: productId } });
 };
 
 /**
