@@ -1,26 +1,18 @@
 mod handlers;
 mod models;
 use axum::{
-    extract::{Extension, Json, Path},
-    http::{Response, StatusCode},
-    response::{IntoResponse, Redirect},
+    middleware,
     routing::{self, get, post},
     Router,
 };
 use base64::Engine;
 use rand::RngCore;
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
-use std::{
-    collections::HashMap,
-    env,
-    net::{Ipv4Addr, SocketAddr, SocketAddrV4},
-    sync::Arc,
-};
+use std::{env, net::SocketAddr, sync::Arc};
 use tokio::{
-    io::{AsyncBufReadExt, AsyncReadExt, BufReader},
+    io::{AsyncBufReadExt, BufReader},
     net::TcpListener,
 };
-use tower_http::trace::TraceLayer;
 use tracing::info;
 
 use crate::handlers::{
@@ -71,8 +63,10 @@ async fn main() -> anyhow::Result<()> {
 
     tracing_subscriber::fmt::init();
     sqlx::migrate!("./migrations").run(&pool).await?;
+
+    let redis_url = std::env::var("REDIS_URL").unwrap_or("redis://redis:6379".to_string());
     // Create a Redis pool
-    let cfg = deadpool_redis::Config::from_url("redis://127.0.0.1");
+    let cfg = deadpool_redis::Config::from_url(redis_url);
     let redis = cfg
         .create_pool(Some(deadpool_redis::Runtime::Tokio1))
         .expect("failed to create redis pool");
@@ -99,6 +93,10 @@ async fn main() -> anyhow::Result<()> {
                 .patch(update_product)
                 .post(create_product),
         )
+        .layer(middleware::from_fn_with_state(
+            state.clone(),
+            crate::handlers::admin::middleware::admin_auth,
+        ))
         .route("/login", post(login));
     // merge routers
     let app = Router::new()

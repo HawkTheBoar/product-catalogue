@@ -38,8 +38,9 @@ services:
       sh -c "
         nix --extra-experimental-features 'nix-command flakes' run ."
     environment:
-      - DATABASE_URL=sqlite:catalogue.db
-      - AXUM_PORT=3000
+     - DATABASE_URL=sqlite:catalogue.db
+     - REDIS_URL=redis://redis:6379
+     - AXUM_PORT=3000
     depends_on:
       - redis
 

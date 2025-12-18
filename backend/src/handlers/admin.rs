@@ -25,9 +25,74 @@ pub struct LoginPayload {
     username: String,
     password: String,
 }
-// admin middleware
-pub async fn admin_auth() {}
-// POST /admin/login { username, password } -> 200 { SET_COOKIE: session_token }, 400
+pub mod middleware {
+
+    use std::sync::Arc;
+
+    use crate::AppState;
+
+    use axum::extract::Request;
+    use axum::middleware::Next;
+
+    use axum::response::{IntoResponse, Response};
+
+    use axum::{
+        extract::State,
+        http::{header, StatusCode},
+        Json,
+    };
+
+    use tracing::info;
+
+    pub async fn test<B>(request: Request, next: Next) -> Response {
+        info!("processing request: {}", request.uri());
+
+        next.run(request).await
+    }
+
+    pub async fn admin_auth(
+        State(app_state): State<Arc<AppState>>,
+
+        request: Request,
+
+        next: Next,
+    ) -> Response {
+        let name = "auth_token";
+
+        let token = request
+            .headers()
+            .get(header::COOKIE)
+            .and_then(|h| h.to_str().ok())
+            .and_then(|cookies| {
+                cookies.split("; ").find_map(|cookie| {
+                    let (k, v) = cookie.split_once('=')?;
+
+                    (k == name).then(|| v.to_string())
+                })
+            });
+
+        if let Some(token) = token {
+            if token_exists(token, app_state.clone())
+                .await
+                .is_ok_and(|x| x)
+            {
+                return next.run(request).await;
+            } else {
+                return (StatusCode::UNAUTHORIZED, "Unauthorized access").into_response();
+            }
+        } else {
+            (StatusCode::UNAUTHORIZED, "Unauthorized access").into_response()
+        }
+    }
+
+    async fn token_exists(token: String, app_state: Arc<AppState>) -> anyhow::Result<bool> {
+        let t = sqlx::query!("SELECT * FROM tokens WHERE token = ?", token)
+            .fetch_optional(&app_state.pg)
+            .await?;
+
+        Ok(t.is_some())
+    }
+} // POST /admin/login { username, password } -> 200 { SET_COOKIE: session_token }, 400
 pub async fn login(
     State(app_state): State<Arc<AppState>>,
     Json(req): Json<LoginPayload>,
@@ -145,10 +210,11 @@ pub async fn create_product(
     Json(product): Json<crate::models::request::create::Product>,
 ) -> HandlerResult<()> {
     sqlx::query!(
-        "INSERT INTO products (name, description, price) VALUES(?, ?, ?)",
+        "INSERT INTO products (name, description, price, category_id) VALUES(?, ?, ?, ?)",
         product.name,
         product.description,
-        product.price
+        product.price,
+        product.category_id
     )
     .execute(&app_state.pg)
     .await

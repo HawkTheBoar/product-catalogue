@@ -28,7 +28,7 @@ pub async fn product_page(
     app_state: State<Arc<AppState>>,
     Path(page): Path<i64>,
 ) -> HandlerResult<Json<Vec<Product>>> {
-    let offset = PAGE_SIZE * page;
+    let offset = PAGE_SIZE * (page - 1);
     let products = sqlx::query_as!(
         Product,
         r#"
@@ -61,7 +61,7 @@ pub async fn product_search(
         info!("Using redis cached response!!");
         return Ok((StatusCode::OK, Json(cached)));
     }
-    let offset = PAGE_SIZE * page;
+    let offset = PAGE_SIZE * (page - 1);
     let products = sqlx::query_as!(
         Product,
         r#"
@@ -133,33 +133,30 @@ pub async fn category_get(
     let products = sqlx::query_as!(
         Product,
         r#"
-    WITH RECURSIVE subcategories AS (
-        SELECT id
-        FROM categories
-        WHERE id = ?
-
-        UNION ALL
-
-        SELECT c.id
-        FROM categories c
-        JOIN subcategories sc ON c.parent_id = sc.id
-    )
-    SELECT
-        p.id,
-        p.name,
-        p.description,
-        p.price,
-        p.category_id
-    FROM products p
-    JOIN subcategories sc ON p.category_id = sc.id
-    ORDER BY p.id
-    "#,
+        WITH RECURSIVE subcategories AS (
+            SELECT id
+            FROM categories
+            WHERE id = ?1
+            UNION ALL
+            SELECT c.id
+            FROM categories c
+            JOIN subcategories sc ON c.parent_id = sc.id
+        )
+        SELECT
+            p.id,
+            p.name,
+            p.description,
+            p.price,
+            p.category_id
+        FROM products p
+        JOIN subcategories sc ON p.category_id = sc.id
+        ORDER BY p.id
+            "#,
         category_id
     )
     .fetch_all(&app_state.pg)
     .await
     .map_err(internal_error)?;
-
     let sub_categories = sqlx::query_as!(
         SubCategory,
         r#"
