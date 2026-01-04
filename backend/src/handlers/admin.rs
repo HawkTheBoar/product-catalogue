@@ -6,6 +6,7 @@ use crate::{
     models::{Admin, Category, Product},
     AppState,
 };
+use axum::extract::Query;
 use axum::http::HeaderMap;
 use axum::{
     extract::{Path, State},
@@ -176,10 +177,10 @@ pub async fn create_category(
     .map_err(internal_error)?;
     Ok((StatusCode::OK, ()))
 }
-// DELETE /admin/category { category_id } -> 200, 400, 401
+// DELETE /admin/category?category_id=1 -> 200, 400, 401
 pub async fn delete_category(
     State(app_state): State<Arc<AppState>>,
-    Json(category): Json<crate::models::request::delete::Category>,
+    Query(category): Query<crate::models::request::delete::Category>,
 ) -> HandlerResult<String> {
     sqlx::query!("DELETE FROM categories WHERE id = ?", category.category_id)
         .execute(&app_state.pg)
@@ -221,10 +222,10 @@ pub async fn create_product(
     .map_err(internal_error)?;
     Ok((StatusCode::OK, ()))
 }
-// DELETE /admin/product/:product_id -> 200, 400, 401
+// DELETE /admin/product?product_id=1 -> 200, 400, 401
 pub async fn delete_product(
     State(app_state): State<Arc<AppState>>,
-    Json(product): Json<crate::models::request::delete::Product>,
+    Query(product): Query<crate::models::request::delete::Product>,
 ) -> HandlerResult<()> {
     sqlx::query!("DELETE FROM products WHERE id = ?", product.product_id)
         .execute(&app_state.pg)
