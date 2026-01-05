@@ -4,7 +4,6 @@ import type {
   Category,
   CategoryResponse,
   AdminLogin,
-  AdminLoginResponse,
   BackendProduct,
   BackendCategory,
 } from '../types';
