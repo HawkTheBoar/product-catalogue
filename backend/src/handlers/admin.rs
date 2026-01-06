@@ -182,7 +182,7 @@ pub async fn delete_category(
     State(app_state): State<Arc<AppState>>,
     Query(category): Query<crate::models::request::delete::Category>,
 ) -> HandlerResult<String> {
-    sqlx::query!("DELETE FROM categories WHERE id = ?", category.category_id)
+    sqlx::query!("DELETE FROM categories WHERE id = ?", category.id)
         .execute(&app_state.pg)
         .await
         .map_err(internal_error)?;
@@ -227,7 +227,7 @@ pub async fn delete_product(
     State(app_state): State<Arc<AppState>>,
     Query(product): Query<crate::models::request::delete::Product>,
 ) -> HandlerResult<()> {
-    sqlx::query!("DELETE FROM products WHERE id = ?", product.product_id)
+    sqlx::query!("DELETE FROM products WHERE id = ?", product.id)
         .execute(&app_state.pg)
         .await
         .map_err(internal_error)?;

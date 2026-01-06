@@ -81,11 +81,11 @@ pub mod request {
         use serde::{Deserialize, Serialize};
         #[derive(Debug, Serialize, Deserialize)]
         pub struct Product {
-            pub product_id: i64,
+            pub id: i64,
         }
         #[derive(Debug, Serialize, Deserialize)]
         pub struct Category {
-            pub category_id: i64,
+            pub id: i64,
         }
     }
     pub mod create {
